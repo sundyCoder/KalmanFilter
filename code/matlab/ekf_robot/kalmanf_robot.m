@@ -103,15 +103,18 @@ function s = kalmanf_robot(s)
    s.u = [(s.z1(2) + s.z1(3))/2;(s.z1(2) + s.z1(3))/2;s.z1(3)-s.z1(2)];
    
    s.x = s.x + s.B.*s.u;
-  
+   
+   % State transition matrix
    s.A = [1, 0, -sin(s.z1(1))*((s.z1(2) + s.z1(3))/2);
-       0, 1, cos(s.z1(1))*((s.z1(2) + s.z1(3))/2);
-       0, 0, 1];
-            
+          0, 1, cos(s.z1(1))*((s.z1(2) + s.z1(3))/2);
+          0, 0, 1];
+      
+   % Observation Matrix         
    s.H = [2*(s.x(1) - s.B1(1)), 2*(s.x(2) - s.B1(2)),0;
          2*(s.x(1) - s.B2(1)), 2*(s.x(2) - s.B2(2)),0;
          0,0,1];
      
+   % Covariance of the state vector estimate
    s.P = s.A * s.P * s.A' + s.Q;
 
    % Compute Kalman gain factor:
